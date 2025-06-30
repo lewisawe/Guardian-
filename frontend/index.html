@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardianλ - Secure File & URL Analysis</title>
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <span class="logo-icon"><i class="fas fa-shield-alt"></i></span>
+                    <h1>Guardian<span class="lambda">λ</span></h1>
+                </div>
+                <p class="tagline">Secure File & URL Analysis</p>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#history">History</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+            <div class="theme-toggle">
+                <button id="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2>Analyze Files & URLs in an Isolated Environment</h2>
+                    <p>Upload files or submit URLs for secure analysis. Each analysis runs in an ephemeral, isolated container to ensure maximum security.</p>
+                </div>
+                <div class="hero-image">
+                    <img src="src/assets/security-illustration.svg" alt="Security Illustration">
+                </div>
+            </section>
+
+            <section class="analysis-section">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="file">File Analysis</button>
+                    <button class="tab-btn" data-tab="url">URL Analysis</button>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="file-tab">
+                        <div class="upload-container">
+                            <div class="upload-area" id="upload-area">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop your file here</p>
+                                <p class="small">or</p>
+                                <button class="btn btn-primary" id="file-select-btn">Select File</button>
+                                <input type="file" id="file-input" hidden>
+                            </div>
+                            <div class="file-info" id="file-info">
+                                <div class="file-preview">
+                                    <i class="fas fa-file"></i>
+                                    <p id="file-name">No file selected</p>
+                                </div>
+                                <button class="btn btn-primary" id="analyze-file-btn" disabled>Analyze File</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="url-tab">
+                        <div class="url-container">
+                            <div class="input-group">
+                                <i class="fas fa-link"></i>
+                                <input type="url" id="url-input" placeholder="Enter URL to analyze (e.g., https://example.com)">
+                            </div>
+                            <button class="btn btn-primary" id="analyze-url-btn">Analyze URL</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="results-section" id="results-section">
+                <h3>Analysis Results</h3>
+                <div class="results-container">
+                    <div class="results-placeholder" id="results-placeholder">
+                        <i class="fas fa-search"></i>
+                        <p>Submit a file or URL to see analysis results</p>
+                    </div>
+                    <div class="results-content" id="results-content" hidden>
+                        <div class="results-header">
+                            <div class="results-type">
+                                <span id="analysis-type-icon"><i class="fas fa-file"></i></span>
+                                <span id="analysis-type-text">File Analysis</span>
+                            </div>
+                            <div class="results-timestamp" id="results-timestamp">
+                                <i class="far fa-clock"></i>
+                                <span>Just now</span>
+                            </div>
+                        </div>
+                        <div class="results-summary">
+                            <div class="summary-item">
+                                <div class="summary-icon safe">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="summary-text">
+                                    <h4>Risk Assessment</h4>
+                                    <p id="risk-level">Safe</p>
+                                </div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="summary-text">
+                                    <h4 id="info-title">File Info</h4>
+                                    <p id="info-details">Details about the analyzed content</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-details">
+                            <div class="accordion">
+                                <div class="accordion-item">
+                                    <button class="accordion-header">
+                                        <span>Detailed Analysis</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="accordion-content">
+                                        <pre id="detailed-results"></pre>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <button class="accordion-header">
+                                        <span>Raw JSON Response</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="accordion-content">
+                                        <pre id="raw-json"></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features-section">
+                <h3>Key Features</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h4>Isolated Environment</h4>
+                        <p>Each analysis runs in a fresh, isolated container for maximum security.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                        <h4>Ephemeral Execution</h4>
+                        <p>No persistent storage of analyzed content. All temporary resources are destroyed after analysis.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h4>Comprehensive Reports</h4>
+                        <p>Detailed analysis reports including file hashes, metadata, and security findings.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h4>Scalable Architecture</h4>
+                        <p>Built on serverless AWS services that scale automatically based on demand.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-icon"><i class="fas fa-shield-alt"></i></span>
+                    <h2>Guardian<span class="lambda">λ</span></h2>
+                </div>
+                <div class="footer-links">
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Guardianλ. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="spinner"></div>
+            <p>Analyzing...</p>
+        </div>
+    </div>
+
+    <script src="src/scripts/config.js"></script>
+    <script src="src/scripts/main.js"></script>
+</body>
+</html>
